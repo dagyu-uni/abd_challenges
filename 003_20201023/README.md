@@ -19,7 +19,7 @@ Group builds a script endo to end: from data generation to data visualization (m
 ## Solution
 You can find the solution on file `solution.ipynb`.
 ### Original Dataset
-Given a dataset of $n$ rows and $m$ tracks this is an example of the dataset:
+Given a dataset of `n` rows and `m` tracks this is an example of the dataset:
 ```
 [
   {"userId":0, "track0": 10, ..., "track[m-1]": 12},
