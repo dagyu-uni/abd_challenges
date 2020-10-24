@@ -17,7 +17,7 @@ e.g., [User001:12.3, User002:4.2, ...]
 Group builds a script endo to end: from data generation to data visualization (matplotlib or any kind of library)
 
 ## Solution
-You can find the solution on file `solution.ipynb`.
+You can find the solution on file [solution.ipynb](solution.ipynb).
 ### Original Dataset
 Given a dataset of `n` rows and `m` tracks this is an example of the dataset:
 ```
