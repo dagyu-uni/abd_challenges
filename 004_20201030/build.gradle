@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+
+sourceCompatibility=13
+
+
+def usernameGithubPackages = project.findProperty("grp.user") ?: System.getenv("GITHUB_USERNAME")
+def passwordGithubPackages = project.findProperty("grp.read.key") ?: System.getenv("GITHUB_READ_TOKEN")
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+    mavenCentral()
+    maven {
+        url = uri("https://maven.pkg.github.com/dagyu/cdc")
+        credentials {
+            username = usernameGithubPackages
+            password = passwordGithubPackages
+        }
+    }
+
+}
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+    implementation "com.dagyu:cdc:1.0rc"
+}
