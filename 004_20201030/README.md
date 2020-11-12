@@ -21,7 +21,7 @@ You can view the architecture in the following picture. Essentialy, between the 
 ![alt](./assets/cdc.png)
 
 ### Dispatching procedure
-In order to improve scalability and reduce the cost in case of error we split the `sync.json` file into mulitple `sync.json`, in order to do that we have to ensure that for each round of CDC process the data are associated always to the same `sync.json` (i.e. the association doesn't change over the time). To achieve this goal we simply use the first `m` bit of the hashed key and these bits are the address of the Sync Manager, obviously with `m` bit we must have $2^m$ Sync Manager active (in the figure $n=2^m$).
+In order to improve scalability and reduce the cost in case of error we split the `sync.json` file into mulitple `sync.json`, in order to do that we have to ensure that for each round of CDC process the data are associated always to the same `sync.json` (i.e. the association doesn't change over the time). To achieve this goal we simply use the first `m` bit of the hashed key and these bits are the address of the Sync Manager, obviously with `m` bit we must have `2^m` Sync Manager active (in the figure `n=2^m`).
 
 ## Implementation
 
