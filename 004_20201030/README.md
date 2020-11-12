@@ -25,7 +25,7 @@ In order to improve scalability and reduce the cost in case of error we split th
 
 ## Implementation
 
-To run a CDC process we have to import [this library](https://github.com/dagyu/cdc) written by us and implement this two `interface`:
+To run a CDC process you have to import [this library](https://github.com/dagyu/cdc) written by us and implement this two `interface`:
 
 * `SourceAdpater`, [this](https://github.com/dagyu/abd_challenges/blob/master/004_20201030/src/main/java/it/unimi/di/abd/SQLAdapter.java) is our implementation that essentialy simulate a stream of data
 * `TargetAdapter`, [this](https://github.com/dagyu/abd_challenges/blob/master/004_20201030/src/main/java/it/unimi/di/abd/FSAdapter.java) that essentialy write the output on the filesystem instead of data lake
