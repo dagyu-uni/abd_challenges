@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "start": "gulp serve"
+  },
+  "dependencies": {
+    "reveal.js": "^4.0.2"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-connect": "^5.7.0",
+    "yargs": "^15.3.1"
+  }
+}

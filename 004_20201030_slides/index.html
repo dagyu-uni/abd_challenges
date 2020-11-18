@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CDC</title>
+  <link rel="stylesheet" href="./node_modules/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="./node_modules/reveal.js/dist/theme/solarized.css" id="theme">
+  <link rel="stylesheet" href="./node_modules/reveal.js/plugin/highlight/zenburn.css">
+  <link rel="stylesheet" href="./styles/index.css">
+</head>
+<body>
+  
+
+  <div class="reveal">
+
+    <div class="slides">
+        <section data-auto-animate  data-auto-animate-unmatched="fade">
+          <img src="./assets/cdc.png" alt="">
+          <h3 data-id="question" class="fragment">How CDC dispatch data?</h3>
+        </section>
+
+        <section data-auto-animate  data-auto-animate-unmatched="fade">
+          <h3 data-id="question">How CDC dispatch data?</h3>
+          <p data-id="function">
+            <span >$dispatch($</span>
+            <span class="fragment" data-fragment-index="2">$x$</span>
+            <span>$)\to$</span>
+            <span class="fragment" data-fragment-index="3">$\{0.\ldots,n\}$</span>
+          </p>
+          <ul>
+            <li >$dispatch$ is the dispatching function</li>
+            <li class="fragment" data-fragment-index="2">$x$ is a record</li>
+            <li class="fragment" data-fragment-index="3">$n+1$ is the number of Sync Manager</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate data-auto-animate-unmatched="fade">
+          <p data-id="function">
+            <span>$dispatch($</span>
+            <span>$x$</span>
+            <span>$)\to$</span>
+            <span>$\{0.\ldots,n\}$</span>
+          </p>
+          <p>This function has to satisfy these two properties</p>
+          <ul>
+            <li class="fragment"><p data-id="p1"><strong>INJECTIVITY</strong> </p>Any record coming from the Source Adapter must be assigned to the same Sync Manager</li>
+            <li class="fragment"><p data-id="p2"><strong>UNIFORMITY</strong></p> The distribution along the Sync Managers must be as uniform as possible</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate data-auto-animate-unmatched="fade">
+          <p data-id="function" >
+            <span>$dispatch($</span>
+            <span>$x$</span>
+            <span>$)\to$</span>
+            <span>$\{0.\ldots,n\}$</span>
+          </p>
+          <p>Anyone know a function with these two properties?</p>
+          <div class="flex-list">
+            <div class="property"><p data-id="p1">INJECTIVITY</p></div>
+            <div class="property"><p data-id="p2">UNIFORMITY</p></div>
+          </div>
+          <p class="fragment" style="color: red;">HASH FUNCTION</p>
+        </section>
+        <section data-auto-animate data-auto-animate-unmatched="fade">
+          <h3>From math to code</h3>
+          <p data-id="function" >
+            <span>$dispatch($</span>
+            <span>$x$</span>
+            <span>$)\to$</span>
+            <span>$\{0,\ldots,n\}$</span>
+          </p>
+          <pre data-id="code"><code data-line-numbers class="java" data-trim>
+          public long dispatch(SourceRecord record) { }
+          </code></pre>
+        </section>
+        <section data-auto-animate data-auto-animate-unmatched="fade">
+          <p data-id="function" >
+            <span>$dispatch($</span>
+            <span>$x$</span>
+            <span>$)\to$</span>
+            <span>$\{0,\ldots,n\}$</span>
+          </p>
+          <pre data-id="code"><code data-line-numbers="2-3" class="java" data-trim>
+            public long dispatch(SourceRecord record) { 
+              // We calculate HASH function on key
+              byte[] hash = record.getKHash();
+            }
+          </code></pre>
+          <p data-id="result">For instance the key is "foo" <span class="fragment">$\to2c26\ldots e7ae$</span></p>
+        </section>
+        <section data-auto-animate data-auto-animate-unmatched="fade">
+          <p data-id="function" >
+            <span>$dispatch($</span>
+            <span>$x$</span>
+            <span>$)\to$</span>
+            <span>$\{0,\ldots,n\}$</span>
+          </p>
+          <pre data-id="code"><code data-line-numbers="4-7" class="java" data-trim>
+            public long dispatch(SourceRecord record) { 
+              // We calculate HASH function on key
+              byte[] hash = record.getKHash();
+              // We take first 4 bits
+              int bits = (hash.length * 8) - 4;
+              // in SHA-256 bits => 256 - 4 => 252
+              BigInteger b = new BigInteger(1,hash).shiftRight(bits);
+            }
+          </code></pre>
+          <p data-id="result">$2c26\ldots e7ae$<span class="fragment">$\to 0010$</span></p>
+        </section>
+        <section data-auto-animate data-auto-animate-unmatched="fade">
+          <p data-id="function" >
+            <span>$dispatch($</span>
+            <span>$x$</span>
+            <span>$)\to$</span>
+            <span>$\{0,\ldots,2^4-1\}$</span>
+          </p>
+          <pre data-id="code"><code data-line-numbers="4-7" class="java" data-trim>
+            public long dispatch(SourceRecord record) { 
+              // We calculate HASH function on key
+              byte[] hash = record.getKHash();
+              // We take first 4 bits
+              int bits = (hash.length * 8) - 4;
+              // in SHA-256 bits => 256 - 4 => 252
+              BigInteger b = new BigInteger(1,hash).shiftRight(bits);
+            }
+          </code></pre>
+          <p data-id="result">$2c26\ldots e7ae$<span></span>$\to 0010$</span></p>
+        </section>
+        <section data-auto-animate data-auto-animate-unmatched="fade">
+          <p data-id="function" >
+            <span>$dispatch($</span>
+            <span>$x$</span>
+            <span>$)\to$</span>
+            <span>$\{0,\ldots,2^4-1\}$</span>
+          </p>
+          <pre data-id="code"><code data-line-numbers="8" class="java" data-trim>
+            public long dispatch(SourceRecord record) { 
+              // We calculate HASH function on key
+              byte[] hash = record.getKHash();
+              // We take first 4 bits
+              int bits = (hash.length * 8) - 4;
+              // in SHA-256 bits => 256 - 4 => 252
+              BigInteger b = new BigInteger(1,hash).shiftRight(bits);
+              return b.getLong();
+            }
+          </code></pre>
+          <p data-id="result">$0010$<span class="fragment" data-fragment-index="1">$\to 2$</span></p>
+          <p class="fragment" data-fragment-index="1">So we obtain that the record with the key = "foo" is assigned to the Sync Manager with id = 2</p>
+        </section>
+        <section>
+          <p>We ran an example with $10000$ records and $16$ Sync Manager</p>
+          <img class="fragment" src="./assets/terminal.png" alt="">
+          <p>$10000/16=625$</p>
+        </section>
+        <section><h1>That's all!</h1></section>
+    </div>
+
+  </div>
+  
+  <script src="./node_modules/reveal.js/plugin/math/math.js"></script>
+  <script src="./node_modules/reveal.js/plugin/highlight/highlight.js"></script>
+  <script src="./node_modules/reveal.js/dist/reveal.js"></script>
+  <script type="text/javascript">
+    Reveal.initialize({
+      center: true,
+      hash: true,
+      plugins: [ RevealHighlight, RevealMath ]
+    });
+  </script>
+</body>
+</html>

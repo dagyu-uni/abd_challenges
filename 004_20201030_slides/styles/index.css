@@ -1,0 +1,28 @@
+.sync-manager {
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  padding: .5rem;
+  background-color: lightblue;
+  color: white;
+  box-shadow:0 .5rem 1rem rgba(0,0,0,.5)!important;
+}
+.flex-list {
+  display: flex;
+  justify-content: space-around;
+  padding-top: 20px;
+}
+.property {
+  border-radius: 40px;
+  padding: 20px;
+  background-color: azure;
+  /* box-shadow:0 .5rem 1rem rgba(0,0,0,.5)!important; */
+}
+
+[data-id=function] {
+  border-radius: 40px;
+  padding: 20px;
+  color: white;
+  background-color: lightgreen;
+  /* box-shadow:0 .5rem 1rem rgba(0,0,0,.5)!important; */
+}
